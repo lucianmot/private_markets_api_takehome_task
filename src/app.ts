@@ -11,6 +11,7 @@ import { errorHandler } from "./lib/error-handler.js";
 import { healthRoutes } from "./routes/health.js";
 import { fundRoutes } from "./routes/funds.js";
 import { investorRoutes } from "./routes/investors.js";
+import { investmentRoutes } from "./routes/investments.js";
 
 export async function buildApp() {
   const app = Fastify({
@@ -50,6 +51,7 @@ export async function buildApp() {
   await app.register(healthRoutes);
   await app.register(fundRoutes);
   await app.register(investorRoutes);
+  await app.register(investmentRoutes);
 
   return app;
 }
