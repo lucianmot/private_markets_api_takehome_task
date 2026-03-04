@@ -1,25 +1,37 @@
 import Fastify from "fastify";
-import {
-  serializerCompiler,
-  validatorCompiler,
-} from "fastify-type-provider-zod";
+import { validatorCompiler } from "fastify-type-provider-zod";
 
 vi.mock("../../../src/services/fund.service.js", () => ({
   getAllFunds: vi.fn().mockResolvedValue([]),
-  getFundById: vi.fn().mockResolvedValue({ id: "abc", name: "Fund" }),
-  createFund: vi
-    .fn()
-    .mockResolvedValue({ id: "abc", name: "New", target_size_usd: 1000000 }),
-  updateFund: vi.fn().mockResolvedValue({
-    id: "abc",
-    name: "Updated",
+  getFundById: vi.fn().mockResolvedValue({
+    id: "550e8400-e29b-41d4-a716-446655440000",
+    name: "Fund",
+    vintage_year: 2024,
     target_size_usd: 1000000,
+    status: "Fundraising",
+    created_at: new Date("2024-01-01"),
+  }),
+  createFund: vi.fn().mockResolvedValue({
+    id: "550e8400-e29b-41d4-a716-446655440000",
+    name: "New",
+    vintage_year: 2024,
+    target_size_usd: 1000000,
+    status: "Fundraising",
+    created_at: new Date("2024-01-01"),
+  }),
+  updateFund: vi.fn().mockResolvedValue({
+    id: "550e8400-e29b-41d4-a716-446655440000",
+    name: "Updated",
+    vintage_year: 2024,
+    target_size_usd: 1000000,
+    status: "Fundraising",
+    created_at: new Date("2024-01-01"),
   }),
 }));
 
 vi.mock("../../../src/services/transaction.service.js", () => ({
   getFundTotalValue: vi.fn().mockResolvedValue({
-    fund_id: "abc",
+    fund_id: "550e8400-e29b-41d4-a716-446655440000",
     total_value: 500000,
     completed_count: 2,
   }),
@@ -29,10 +41,12 @@ import * as fundService from "../../../src/services/fund.service.js";
 import * as txnService from "../../../src/services/transaction.service.js";
 import { fundRoutes } from "../../../src/routes/funds.js";
 
+const FUND_ID = "550e8400-e29b-41d4-a716-446655440000";
+
 async function buildTestApp() {
   const app = Fastify({ logger: false });
   app.setValidatorCompiler(validatorCompiler);
-  app.setSerializerCompiler(serializerCompiler);
+  app.setSerializerCompiler(() => (data) => JSON.stringify(data));
   await app.register(fundRoutes);
   await app.ready();
   return app;
@@ -73,36 +87,30 @@ describe("fund routes", () => {
   it("GET /funds/:id → 200", async () => {
     const res = await app.inject({
       method: "GET",
-      url: "/funds/550e8400-e29b-41d4-a716-446655440000",
+      url: `/funds/${FUND_ID}`,
     });
     expect(res.statusCode).toBe(200);
-    expect(fundService.getFundById).toHaveBeenCalledWith(
-      "550e8400-e29b-41d4-a716-446655440000",
-    );
+    expect(fundService.getFundById).toHaveBeenCalledWith(FUND_ID);
   });
 
   it("PUT /funds/:id → 200", async () => {
     const res = await app.inject({
       method: "PUT",
-      url: "/funds/550e8400-e29b-41d4-a716-446655440000",
+      url: `/funds/${FUND_ID}`,
       payload: { name: "Updated" },
     });
     expect(res.statusCode).toBe(200);
-    expect(fundService.updateFund).toHaveBeenCalledWith(
-      "550e8400-e29b-41d4-a716-446655440000",
-      { name: "Updated" },
-    );
+    expect(fundService.updateFund).toHaveBeenCalledWith(FUND_ID, {
+      name: "Updated",
+    });
   });
 
   it("GET /funds/:fund_id/total-value → 200", async () => {
     const res = await app.inject({
       method: "GET",
-      url: "/funds/550e8400-e29b-41d4-a716-446655440000/total-value?include_pending=true",
+      url: `/funds/${FUND_ID}/total-value?include_pending=true`,
     });
     expect(res.statusCode).toBe(200);
-    expect(txnService.getFundTotalValue).toHaveBeenCalledWith(
-      "550e8400-e29b-41d4-a716-446655440000",
-      true,
-    );
+    expect(txnService.getFundTotalValue).toHaveBeenCalledWith(FUND_ID, true);
   });
 });

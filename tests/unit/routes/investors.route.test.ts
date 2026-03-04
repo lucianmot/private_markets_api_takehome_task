@@ -1,16 +1,14 @@
 import Fastify from "fastify";
-import {
-  serializerCompiler,
-  validatorCompiler,
-} from "fastify-type-provider-zod";
+import { validatorCompiler } from "fastify-type-provider-zod";
 
 vi.mock("../../../src/services/investor.service.js", () => ({
   getAllInvestors: vi.fn().mockResolvedValue([]),
   createInvestor: vi.fn().mockResolvedValue({
-    id: "abc",
+    id: "550e8400-e29b-41d4-a716-446655440000",
     name: "Investor",
     investor_type: "Individual",
     email: "test@example.com",
+    created_at: new Date("2024-01-01"),
   }),
 }));
 
@@ -20,7 +18,7 @@ import { investorRoutes } from "../../../src/routes/investors.js";
 async function buildTestApp() {
   const app = Fastify({ logger: false });
   app.setValidatorCompiler(validatorCompiler);
-  app.setSerializerCompiler(serializerCompiler);
+  app.setSerializerCompiler(() => (data) => JSON.stringify(data));
   await app.register(investorRoutes);
   await app.ready();
   return app;

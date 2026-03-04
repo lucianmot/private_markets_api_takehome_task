@@ -4,7 +4,6 @@ import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUI from "@fastify/swagger-ui";
 import {
   jsonSchemaTransform,
-  serializerCompiler,
   validatorCompiler,
 } from "fastify-type-provider-zod";
 import { errorHandler } from "./lib/error-handler.js";
@@ -27,7 +26,7 @@ export async function buildApp() {
   });
 
   app.setValidatorCompiler(validatorCompiler);
-  app.setSerializerCompiler(serializerCompiler);
+  app.setSerializerCompiler(() => (data) => JSON.stringify(data));
 
   await app.register(cors, { origin: true });
 

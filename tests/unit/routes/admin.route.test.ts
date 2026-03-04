@@ -1,8 +1,5 @@
 import Fastify from "fastify";
-import {
-  serializerCompiler,
-  validatorCompiler,
-} from "fastify-type-provider-zod";
+import { validatorCompiler } from "fastify-type-provider-zod";
 
 vi.mock("../../../src/services/transaction.service.js", () => ({
   recalculateFees: vi.fn().mockResolvedValue({
@@ -18,7 +15,7 @@ import { adminRoutes } from "../../../src/routes/admin.js";
 async function buildTestApp() {
   const app = Fastify({ logger: false });
   app.setValidatorCompiler(validatorCompiler);
-  app.setSerializerCompiler(serializerCompiler);
+  app.setSerializerCompiler(() => (data) => JSON.stringify(data));
   await app.register(adminRoutes);
   await app.ready();
   return app;

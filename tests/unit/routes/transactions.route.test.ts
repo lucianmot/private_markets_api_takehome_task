@@ -1,35 +1,46 @@
 import Fastify from "fastify";
-import {
-  serializerCompiler,
-  validatorCompiler,
-} from "fastify-type-provider-zod";
+import { validatorCompiler } from "fastify-type-provider-zod";
 
 vi.mock("../../../src/services/transaction.service.js", () => ({
   getAllTransactions: vi.fn().mockResolvedValue([]),
   processTransaction: vi.fn().mockResolvedValue({
-    transaction_id: "txn-1",
+    transaction_id: "550e8400-e29b-41d4-a716-446655440000",
+    fund_id: "550e8400-e29b-41d4-a716-446655440001",
     amount: 100000,
     fee_percentage: 2.5,
     calculated_fees: 2500,
+    auto_calculate_fees: true,
+    bypass_validation: false,
     status: "completed",
+    created_at: new Date("2024-01-01"),
+    reason: null,
+    reversed_at: null,
   }),
   reverseTransaction: vi.fn().mockResolvedValue({
-    transaction_id: "txn-1",
+    transaction_id: "550e8400-e29b-41d4-a716-446655440000",
+    fund_id: "550e8400-e29b-41d4-a716-446655440001",
     amount: 100000,
     fee_percentage: 2.5,
     calculated_fees: null,
+    auto_calculate_fees: true,
+    bypass_validation: false,
     status: "reversed",
+    created_at: new Date("2024-01-01"),
     reason: "test",
+    reversed_at: new Date("2024-01-02"),
   }),
 }));
 
 import * as txnService from "../../../src/services/transaction.service.js";
 import { transactionRoutes } from "../../../src/routes/transactions.js";
 
+const TXN_ID = "550e8400-e29b-41d4-a716-446655440000";
+const FUND_ID = "550e8400-e29b-41d4-a716-446655440001";
+
 async function buildTestApp() {
   const app = Fastify({ logger: false });
   app.setValidatorCompiler(validatorCompiler);
-  app.setSerializerCompiler(serializerCompiler);
+  app.setSerializerCompiler(() => (data) => JSON.stringify(data));
   await app.register(transactionRoutes);
   await app.ready();
   return app;
@@ -57,7 +68,7 @@ describe("transaction routes", () => {
       method: "POST",
       url: "/transactions/process",
       payload: {
-        fund_id: "550e8400-e29b-41d4-a716-446655440000",
+        fund_id: FUND_ID,
         amount: 100000,
         fee_percentage: 2.5,
         auto_calculate_fees: true,
@@ -71,12 +82,12 @@ describe("transaction routes", () => {
   it("PUT /transactions/:transaction_id/reverse → 200", async () => {
     const res = await app.inject({
       method: "PUT",
-      url: "/transactions/550e8400-e29b-41d4-a716-446655440000/reverse",
+      url: `/transactions/${TXN_ID}/reverse`,
       payload: { reason: "test reversal", refund_fees: true },
     });
     expect(res.statusCode).toBe(200);
     expect(txnService.reverseTransaction).toHaveBeenCalledWith(
-      "550e8400-e29b-41d4-a716-446655440000",
+      TXN_ID,
       "test reversal",
       true,
     );
