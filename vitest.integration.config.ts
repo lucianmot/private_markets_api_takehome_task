@@ -17,6 +17,7 @@ export default defineConfig({
       LOG_LEVEL: "silent",
     },
     coverage: {
+      enabled: true,
       provider: "v8",
       reporter: ["text", "lcov"],
       include: ["src/**/*.ts"],
