@@ -40,11 +40,12 @@ Bonus
 ➔ Testing: Unit tests or integration tests
 ➔ Best practices: Following REST conventions, HTTP status codes
 SUBMISSION
+
 1. Create a public GitHub repository (or another Git provider)
 2. Include a comprehensive README with:
-○ Setup and run instructions
-○ API endpoint documentation or reference to spec
-○ Any assumptions or design decisions made
+   ○ Setup and run instructions
+   ○ API endpoint documentation or reference to spec
+   ○ Any assumptions or design decisions made
 3. Ensure the application can be run locally with minimal setup
-○ Include a simple way to run your application locally
-○ Provide sample data or seed scripts if helpful
+   ○ Include a simple way to run your application locally
+   ○ Provide sample data or seed scripts if helpful

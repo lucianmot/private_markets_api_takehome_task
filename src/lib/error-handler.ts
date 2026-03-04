@@ -1,4 +1,5 @@
 import type { FastifyError, FastifyReply, FastifyRequest } from "fastify";
+import * as Sentry from "@sentry/node";
 import { AppError } from "./errors.js";
 
 interface PrismaClientKnownRequestError extends Error {
@@ -72,8 +73,9 @@ export function errorHandler(
     });
   }
 
-  // Unhandled errors — log and return 500
+  // Unhandled errors — log, report to Sentry, and return 500
   _request.log.error(error, "Unhandled error");
+  Sentry.captureException(error);
   return reply.status(500).send({
     error: "Internal Server Error",
     statusCode: 500,

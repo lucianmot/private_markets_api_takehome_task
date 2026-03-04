@@ -6,18 +6,18 @@ A RESTful API for managing private market funds and investor commitments, built 
 
 ## Tech stack
 
-| Layer | Technology | Version |
-|-------|-----------|---------|
-| Runtime | Node.js | >= 20.0.0 |
-| Framework | Fastify | 5.7.4 |
-| Language | TypeScript | 5.9.3 |
-| ORM | Prisma (with PrismaPg adapter) | 7.4.1 |
-| Database | PostgreSQL | 16 (via Docker) |
-| Validation | Zod (via fastify-type-provider-zod) | 4.3.6 |
-| Build | tsup | 8.5.1 |
-| Test | Vitest + @vitest/coverage-v8 | 4.0.18 |
-| Observability | OpenTelemetry + Sentry | 0.212.0 / 10.40.0 |
-| Package manager | Yarn | 4.12.0 |
+| Layer           | Technology                          | Version           |
+| --------------- | ----------------------------------- | ----------------- |
+| Runtime         | Node.js                             | >= 20.0.0         |
+| Framework       | Fastify                             | 5.7.4             |
+| Language        | TypeScript                          | 5.9.3             |
+| ORM             | Prisma (with PrismaPg adapter)      | 7.4.1             |
+| Database        | PostgreSQL                          | 16 (via Docker)   |
+| Validation      | Zod (via fastify-type-provider-zod) | 4.3.6             |
+| Build           | tsup                                | 8.5.1             |
+| Test            | Vitest + @vitest/coverage-v8        | 4.0.18            |
+| Observability   | OpenTelemetry + Sentry              | 0.212.0 / 10.40.0 |
+| Package manager | Yarn                                | 4.12.0            |
 
 ## Architecture
 
@@ -37,22 +37,22 @@ Route (HTTP + Zod validation)
 
 13 endpoints across 6 route files:
 
-| Method | Path | Purpose |
-|--------|------|---------|
-| GET | `/health` | Health check |
-| GET | `/funds` | List all funds |
-| POST | `/funds` | Create fund |
-| GET | `/funds/:id` | Get fund by ID |
-| PUT | `/funds/:id` | Update fund |
-| GET | `/funds/:fund_id/total-value` | Fund total value (with optional pending) |
-| GET | `/investors` | List all investors |
-| POST | `/investors` | Create investor |
-| GET | `/funds/:fund_id/investments` | List investments for fund |
-| POST | `/funds/:fund_id/investments` | Create investment |
-| GET | `/transactions` | List all transactions |
-| POST | `/transactions/process` | Process transaction with fee calculation |
-| PUT | `/transactions/:transaction_id/reverse` | Reverse transaction |
-| POST | `/admin/recalculate-fees` | Batch recalculate fees for fund |
+| Method | Path                                    | Purpose                                  |
+| ------ | --------------------------------------- | ---------------------------------------- |
+| GET    | `/health`                               | Health check                             |
+| GET    | `/funds`                                | List all funds                           |
+| POST   | `/funds`                                | Create fund                              |
+| GET    | `/funds/:id`                            | Get fund by ID                           |
+| PUT    | `/funds/:id`                            | Update fund                              |
+| GET    | `/funds/:fund_id/total-value`           | Fund total value (with optional pending) |
+| GET    | `/investors`                            | List all investors                       |
+| POST   | `/investors`                            | Create investor                          |
+| GET    | `/funds/:fund_id/investments`           | List investments for fund                |
+| POST   | `/funds/:fund_id/investments`           | Create investment                        |
+| GET    | `/transactions`                         | List all transactions                    |
+| POST   | `/transactions/process`                 | Process transaction with fee calculation |
+| PUT    | `/transactions/:transaction_id/reverse` | Reverse transaction                      |
+| POST   | `/admin/recalculate-fees`               | Batch recalculate fees for fund          |
 
 ## Database models
 
@@ -67,23 +67,23 @@ Route (HTTP + Zod validation)
 
 216 tests across 29 files:
 
-| Category | Tests | Files |
-|----------|-------|-------|
-| Unit: schemas | 51 | 4 |
-| Unit: services | 47 | 5 |
-| Unit: lib (errors + error-handler) | 21 | 2 |
-| Unit: routes | 14 | 6 |
-| Unit: repositories | 15 | 4 |
-| Unit: app bootstrap | 2 | 1 |
-| Integration | 66 | 7 |
-| **Total** | **216** | **29** |
+| Category                           | Tests   | Files  |
+| ---------------------------------- | ------- | ------ |
+| Unit: schemas                      | 51      | 4      |
+| Unit: services                     | 47      | 5      |
+| Unit: lib (errors + error-handler) | 21      | 2      |
+| Unit: routes                       | 14      | 6      |
+| Unit: repositories                 | 15      | 4      |
+| Unit: app bootstrap                | 2       | 1      |
+| Integration                        | 66      | 7      |
+| **Total**                          | **216** | **29** |
 
 ## Coverage
 
-| Suite | Stmts | Branch | Funcs | Lines |
-|-------|-------|--------|-------|-------|
-| Unit (`yarn test:coverage`) | 96.85% | 87.27% | 98.43% | 96.82% |
-| Integration (`yarn test:integration:coverage`) | 95.81% | 85.45% | — | 96.29% |
+| Suite                                          | Stmts  | Branch | Funcs  | Lines  |
+| ---------------------------------------------- | ------ | ------ | ------ | ------ |
+| Unit (`yarn test:coverage`)                    | 96.85% | 87.27% | 98.43% | 96.82% |
+| Integration (`yarn test:integration:coverage`) | 95.81% | 85.45% | —      | 96.29% |
 
 ## Directory structure
 

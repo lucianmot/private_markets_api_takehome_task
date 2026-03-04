@@ -31,7 +31,8 @@ await app.register(fastifySwagger, {
   openapi: {
     info: {
       title: "Titanbay Funds API",
-      description: "RESTful API for managing private market funds and investor commitments",
+      description:
+        "RESTful API for managing private market funds and investor commitments",
       version: "1.0.0",
     },
     servers: [{ url: "http://localhost:3000" }],
@@ -45,6 +46,7 @@ await app.register(fastifySwaggerUI, {
 ```
 
 Key details:
+
 - `jsonSchemaTransform` from `fastify-type-provider-zod` converts Zod schemas to JSON Schema for OpenAPI
 - All routes with Zod `schema` definitions automatically appear in the docs
 - Swagger UI served at `/docs`, OpenAPI JSON at `/docs/json`
@@ -59,7 +61,7 @@ curl http://localhost:3000/docs/json   # OpenAPI 3.0 JSON spec
 
 ## Files modified
 
-| File | Change |
-|------|--------|
-| `package.json` | Added `@fastify/swagger`, `@fastify/swagger-ui` dependencies |
-| `src/app.ts` | Registered Swagger + Swagger UI plugins with `jsonSchemaTransform` |
+| File           | Change                                                             |
+| -------------- | ------------------------------------------------------------------ |
+| `package.json` | Added `@fastify/swagger`, `@fastify/swagger-ui` dependencies       |
+| `src/app.ts`   | Registered Swagger + Swagger UI plugins with `jsonSchemaTransform` |

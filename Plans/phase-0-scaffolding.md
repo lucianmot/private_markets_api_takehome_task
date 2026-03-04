@@ -148,7 +148,8 @@ export default defineConfig({
     maxWorkers: 1,
     globalSetup: "./tests/global-setup.integration.ts",
     env: {
-      DATABASE_URL: "postgresql://postgres:postgres@localhost:5433/funds_test_db",
+      DATABASE_URL:
+        "postgresql://postgres:postgres@localhost:5433/funds_test_db",
       NODE_ENV: "test",
       LOG_LEVEL: "silent",
     },
@@ -225,13 +226,13 @@ yarn lint         # no errors
 
 ## Files created
 
-| File | Purpose |
-|------|---------|
-| `package.json` | Project manifest, scripts, dependencies |
-| `tsconfig.json` | TypeScript compiler options |
-| `tsup.config.ts` | Build pipeline (ESM, node20, 2 entry points) |
-| `vitest.config.ts` | Unit test config with v8 coverage |
-| `vitest.integration.config.ts` | Integration test config with forks pool |
-| `src/server.ts` | Entry point stub |
-| `src/app.ts` | App factory stub |
-| `src/instrumentation.ts` | OTel/Sentry stub |
+| File                           | Purpose                                      |
+| ------------------------------ | -------------------------------------------- |
+| `package.json`                 | Project manifest, scripts, dependencies      |
+| `tsconfig.json`                | TypeScript compiler options                  |
+| `tsup.config.ts`               | Build pipeline (ESM, node20, 2 entry points) |
+| `vitest.config.ts`             | Unit test config with v8 coverage            |
+| `vitest.integration.config.ts` | Integration test config with forks pool      |
+| `src/server.ts`                | Entry point stub                             |
+| `src/app.ts`                   | App factory stub                             |
+| `src/instrumentation.ts`       | OTel/Sentry stub                             |

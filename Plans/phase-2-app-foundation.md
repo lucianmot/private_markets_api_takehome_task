@@ -60,7 +60,10 @@ Response shape: `{ error: string, statusCode: number, details?: [...] }`
 ```ts
 import Fastify from "fastify";
 import cors from "@fastify/cors";
-import { serializerCompiler, validatorCompiler } from "fastify-type-provider-zod";
+import {
+  serializerCompiler,
+  validatorCompiler,
+} from "fastify-type-provider-zod";
 import { errorHandler } from "./lib/error-handler.js";
 import { healthRoutes } from "./routes/health.js";
 
@@ -90,6 +93,7 @@ export async function buildApp() {
 ```
 
 Key details:
+
 - Zod compiler pair from `fastify-type-provider-zod` replaces default Ajv
 - Pino-pretty transport in non-production, structured JSON in production
 - LOG_LEVEL configurable via env (defaults to "info")
@@ -138,10 +142,10 @@ curl http://localhost:3000/health
 
 ## Files created
 
-| File | Purpose |
-|------|---------|
-| `src/lib/errors.ts` | AppError, NotFoundError, ConflictError classes |
-| `src/lib/error-handler.ts` | Global error handler (Zod, Prisma, Fastify, 500) |
-| `src/app.ts` | Fastify app factory with Zod compilers, CORS, error handler |
-| `src/routes/health.ts` | `GET /health` endpoint |
-| `src/server.ts` | Server entry point (listen on port 3000) |
+| File                       | Purpose                                                     |
+| -------------------------- | ----------------------------------------------------------- |
+| `src/lib/errors.ts`        | AppError, NotFoundError, ConflictError classes              |
+| `src/lib/error-handler.ts` | Global error handler (Zod, Prisma, Fastify, 500)            |
+| `src/app.ts`               | Fastify app factory with Zod compilers, CORS, error handler |
+| `src/routes/health.ts`     | `GET /health` endpoint                                      |
+| `src/server.ts`            | Server entry point (listen on port 3000)                    |
