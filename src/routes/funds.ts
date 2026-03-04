@@ -5,7 +5,10 @@ import {
   UpdateFundSchema,
   FundParamsSchema,
 } from "../schemas/fund.schema.js";
+import { InvestmentParamsSchema } from "../schemas/investment.schema.js";
+import { TotalValueQuerySchema } from "../schemas/transaction.schema.js";
 import * as fundService from "../services/fund.service.js";
+import * as txnService from "../services/transaction.service.js";
 
 export async function fundRoutes(app: FastifyInstance) {
   const typedApp = app.withTypeProvider<ZodTypeProvider>();
@@ -42,6 +45,24 @@ export async function fundRoutes(app: FastifyInstance) {
         request.body,
       );
       return reply.send(fund);
+    },
+  );
+
+  typedApp.get(
+    "/funds/:fund_id/total-value",
+    {
+      schema: {
+        params: InvestmentParamsSchema,
+        querystring: TotalValueQuerySchema,
+      },
+    },
+    async (request, reply) => {
+      const includePending = request.query.include_pending === "true";
+      const result = await txnService.getFundTotalValue(
+        request.params.fund_id,
+        includePending,
+      );
+      return reply.send(result);
     },
   );
 }
