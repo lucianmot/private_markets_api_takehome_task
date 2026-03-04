@@ -9,6 +9,7 @@ import {
 } from "fastify-type-provider-zod";
 import { errorHandler } from "./lib/error-handler.js";
 import { healthRoutes } from "./routes/health.js";
+import { fundRoutes } from "./routes/funds.js";
 
 export async function buildApp() {
   const app = Fastify({
@@ -46,6 +47,7 @@ export async function buildApp() {
   app.setErrorHandler(errorHandler);
 
   await app.register(healthRoutes);
+  await app.register(fundRoutes);
 
   return app;
 }
