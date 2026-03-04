@@ -24,6 +24,8 @@
   },
   "dependencies": {
     "@fastify/cors": "^11.2.0",
+    "@fastify/swagger": "^9.7.0",
+    "@fastify/swagger-ui": "^5.2.5",
     "@opentelemetry/auto-instrumentations-node": "^0.70.1",
     "@opentelemetry/exporter-trace-otlp-http": "^0.212.0",
     "@opentelemetry/sdk-node": "^0.212.0",
