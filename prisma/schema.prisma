@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum FundStatus {
+  Fundraising
+  Investing
+  Closed
+}
+
+enum InvestorType {
+  Individual
+  Institution
+  FamilyOffice
+}
+
+enum TransactionStatus {
+  pending
+  completed
+  reversed
+}
+
+model Fund {
+  id              String        @id @default(uuid()) @db.Uuid
+  name            String
+  vintage_year    Int
+  target_size_usd Decimal       @db.Decimal(18, 2)
+  status          FundStatus    @default(Fundraising)
+  created_at      DateTime      @default(now())
+  investments     Investment[]
+  transactions    Transaction[]
+}
+
+model Investor {
+  id            String       @id @default(uuid()) @db.Uuid
+  name          String
+  investor_type InvestorType
+  email         String       @unique
+  created_at    DateTime     @default(now())
+  investments   Investment[]
+}
+
+model Investment {
+  id              String   @id @default(uuid()) @db.Uuid
+  fund_id         String   @db.Uuid
+  investor_id     String   @db.Uuid
+  amount_usd      Decimal  @db.Decimal(18, 2)
+  investment_date DateTime @db.Date
+  fund            Fund     @relation(fields: [fund_id], references: [id], onDelete: Restrict)
+  investor        Investor @relation(fields: [investor_id], references: [id], onDelete: Restrict)
+}
+
+model Transaction {
+  transaction_id      String            @id @default(uuid()) @db.Uuid
+  fund_id             String            @db.Uuid
+  amount              Decimal           @db.Decimal(18, 2)
+  fee_percentage      Decimal           @db.Decimal(5, 4)
+  calculated_fees     Decimal?          @db.Decimal(18, 2)
+  auto_calculate_fees Boolean           @default(false)
+  bypass_validation   Boolean           @default(false)
+  status              TransactionStatus @default(pending)
+  created_at          DateTime          @default(now())
+  reason              String?
+  reversed_at         DateTime?
+  fund                Fund              @relation(fields: [fund_id], references: [id], onDelete: Restrict)
+}
